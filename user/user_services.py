@@ -16,7 +16,8 @@ def api_response(message,data, status_code):
 
 class User(BaseModel):
     __tablename__ = 'user'
-    __table_args__ = {'extend_existing': True}  # Add this line
+    __table_args__ = {'extend_existing': True}  # Add this line that if the table is already created than this will not create an another table or will not raise an error 
+    
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String(255), nullable=False, unique=True)
