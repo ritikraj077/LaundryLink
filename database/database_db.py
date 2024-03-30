@@ -2,6 +2,8 @@
 import pymysql
 from sqlalchemy.orm import create_session, session, sessionmaker, declarative_base
 from sqlalchemy import create_engine, Column, Integer, String, DateTime, Enum, ForeignKey
+from sqlalchemy import MetaData
+
  
  
     
@@ -10,7 +12,10 @@ database_url = 'mysql+pymysql://ritik:Ritik%401234@localhost/laundrylink'
 engine = create_engine(database_url)
 Session = sessionmaker(bind=engine)
 
+
 BaseModel = declarative_base()
+
+
 
     
 class User(BaseModel):
@@ -19,9 +24,11 @@ class User(BaseModel):
     username =  Column(String(255), nullable=False, unique=True)
     email =  Column(String(255), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
-    role =  Column(Enum('student', 'staff', 'admin'), nullable=False)
+    # role =  Column(Enum('student', 'staff', 'admin'), nullable=False)
     def __repr__(self):
         return '<User %r>' % self.username
+   
+
 
 
 # Define Machine model
@@ -45,3 +52,32 @@ class Booking(BaseModel):
     status =   Column(Enum('pending', 'confirmed', 'cancelled'), nullable=False, default='pending')
     def __repr__(self):
         return '<Booking %r>' % self.id
+
+
+class ClothesData(BaseModel):
+    __tablename__ = 'clothes_data'
+
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(255), nullable=False)
+    shirt = Column(Integer)
+    pant = Column(Integer)
+    dress = Column(Integer)
+    iron = Column(Integer)
+    charges = Column(Integer)
+
+
+    def __repr__(self):
+         return '<ClothesData %r>' % self.id
+    BaseModel.metadata.create_all(engine)
+    
+    
+
+# Create a session
+session = Session()
+
+# Commit the session
+session.commit()
+
+# Close the session
+session.close()

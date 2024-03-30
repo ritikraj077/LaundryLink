@@ -68,6 +68,15 @@ def search_machine(cred):
     return jsonify(machine_data)
 
 
+def machine_id(cred):
+        machines = session.query(Machine).filter(Machine.location == cred.location,Machine.type == cred.type).one()
+        if not machines:
+            return api_response(message="Machines not found!", data=None, status_code=404)
+        
+        
+
+
+
 
 # 
 

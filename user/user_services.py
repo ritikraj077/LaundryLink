@@ -25,8 +25,11 @@ class User(BaseModel):
     password_hash = Column(String(255), nullable=False)
     role = Column(Enum('student', 'staff', 'admin'), nullable=False)
     
+
+    
     def __repr__(self):
         return '<User %r>' % self.username
+    
 
 
 def sign_up_db(user_data): 
@@ -84,7 +87,7 @@ def login_db(user_data):
     
     if bcrypt.checkpw(user_entered_password, stored_password):
         token = generate_jwt_token(user_data.username, SECRET_KEY)
-        return api_response(message="Logged In successfully!", data={"username": user.username, "token": token}, status_code=200)
+        return api_response(message="Logged In successfully!", data={"id": user.id,"username": user.username, "token": token}, status_code=200)
     else:
         return api_response(message="Unauthorized Access!", data=user, status_code=401)
     
@@ -144,3 +147,11 @@ def forget_password_db(cred):
 
 
 
+def userid_from_username(username):
+    try:
+        user = session.query(User).filter(User.username == username).one()
+    except NoResultFound:
+        return jsonify({'error': "User not found!"}), 404
+    
+    user_id = user.id
+    return user_id

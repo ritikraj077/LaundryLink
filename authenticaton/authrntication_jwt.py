@@ -22,6 +22,7 @@ def decode_user(token,secret_key):
 def check_bearer_token(request, SECRET_KEY):
     auth_header = request.headers.get('Authorization')
     
+
     
     if auth_header is None:
         return {'error': 'Missing Authorization header'}, 401
