@@ -23,7 +23,6 @@ class User(BaseModel):
     username = Column(String(255), nullable=False, unique=True)
     email = Column(String(255), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
-    role = Column(Enum('student', 'staff', 'admin'), nullable=False)
     
 
     
@@ -42,7 +41,6 @@ def sign_up_db(user_data):
             username= user_data.username,
             email=user_data.email,
             password_hash=hashed_password,  # Make sure to hash passwords securely
-            role=user_data.role  # Assuming 'student' is a valid role
         )
 
         session = Session()

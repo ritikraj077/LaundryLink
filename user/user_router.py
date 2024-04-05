@@ -6,6 +6,8 @@ from user.user_services import sign_up_db, login_db,delete_user_db,forget_passwo
 
 user_app = Blueprint('user_app', __name__)
 
+
+##api to sing up user to make new rgistration 
 @user_app.route("/sign_up", methods=["POST"])
 def sign_up():
     data = request.json
@@ -20,7 +22,7 @@ def sign_up():
 
   
   
-  
+ ##api to login user  
 @user_app.route("/login", methods=["POST"])
 def login():
     
@@ -33,8 +35,17 @@ def login():
     return user_login_resp
         
     
-    
-    
+   
+ ##api to logout user  
+@user_app.route("/logout",methods = ["POST"])
+def Logout_user():
+
+    session.pop('username',None)
+    return redirect("url_for('index')") 
+
+
+
+#api to delete the user details from the database     
 @user_app.route("/delete_user",methods = ["POST"])
 def delete_user():
     data = request.json
@@ -42,17 +53,12 @@ def delete_user():
     delete_user_db(delete_cred)
     return jsonify({'success': 'User deleted successfully'})  
 
-#api to logout user 
 
-@user_app.route("/logout",methods = ["POST"])
-def Logout_user():
 
-    session.pop('username',None)
-    return redirect("url_for('index')")
     
 
 
-
+##api to reset password using forget password 
 @user_app.route("/Forget_pass",methods = ["POST"])
 def forget_password():
     data = request.json
@@ -63,3 +69,5 @@ def forget_password():
 
     result = forget_password_db(cred)
     return result
+
+
